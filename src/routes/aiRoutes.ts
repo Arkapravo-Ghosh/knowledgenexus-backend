@@ -8,38 +8,41 @@ import { generateQuiz } from "../utils/quizGeneratorUtils";
 import { validateAIRequest } from "../middlewares/validateMiddlewares";
 import { Request, Response, NextFunction } from "express";
 import sanitizeHtml from "sanitize-html"; // Add sanitization library
+import { translateText } from "../controllers/translateController";
 
 const router = express.Router();
 
 // Secure validateAIRequest middleware
 interface SecureValidateAIRequest extends Request {
-    body: {
-        text?: string;
-        question?: string;
-        context?: string;
-    };
+  body: {
+    text?: string;
+    question?: string;
+    context?: string;
+  };
 }
 
 const secureValidateAIRequest = async (
-    req: SecureValidateAIRequest,
-    res: Response,
-    next: NextFunction
+  req: SecureValidateAIRequest,
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
-    try {
-        await validateAIRequest(req, res, next);
-    } catch (error) {
-        console.error("Validation error:", error); // Log the error
-        res.status(500).json({ error: "Validation failed." });
-    }
+  try {
+    await validateAIRequest(req, res, next);
+  } catch (error) {
+    console.error("Validation error:", error); // Log the error
+    res.status(500).json({ error: "Validation failed." });
+  }
 };
 
 // Helper function to sanitize input
 const sanitizeInput = (input: string): string => {
-    return sanitizeHtml(input, {
-        allowedTags: [],
-        allowedAttributes: {},
-    });
+  return sanitizeHtml(input, {
+    allowedTags: [],
+    allowedAttributes: {},
+  });
 };
+
+router.post("/translate", secureValidateAIRequest, translateText);
 
 // Route for Summarization
 router.post("/summarize", secureValidateAIRequest, async (req, res) => {

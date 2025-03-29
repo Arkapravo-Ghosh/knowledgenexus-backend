@@ -59,6 +59,10 @@ server.listen(port, (): void => {
   console.log("Server listening on port " + port);
 });
 
+// MongoDB Connection
+import connectDB from "./configs/dbConfig";
+connectDB();
+
 // Close server
 const closeServer = (): void => {
   server.close();
