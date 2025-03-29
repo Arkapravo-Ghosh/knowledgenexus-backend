@@ -9,7 +9,9 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
 });
 
 // Router Imports
+import aiRouter from "./routes/aiRoutes";
 
 // Router Mounts
+router.use("/ai", aiRouter);
 
 export default router;
