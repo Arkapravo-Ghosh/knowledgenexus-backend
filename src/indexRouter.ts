@@ -10,8 +10,10 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
 
 // Router Imports
 import aiRouter from "./routes/aiRoutes";
+import pdfRouter from "./routes/pdfRouter";
 
 // Router Mounts
 router.use("/ai", aiRouter);
+router.use("/pdf", pdfRouter);
 
 export default router;
